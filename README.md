@@ -12,6 +12,17 @@ Setup:
 * `bundle exec rspec`
 
 I put the failing test in "pending" state, so the command `rspec` is not failing.
+```ruby
+RSpec.describe 'DatabaseCleaner issue 564' do
+  include_context 'a_user_exist'
+
+  # below test failing
+  # switch me from "pending" to "it" when I pass :)
+  pending 'user should not get cleaned' do
+    expect(User.count).to_not eq 0
+  end
+end
+```
 We can see that the expected value is `!=0`, yet we got `0` in the test, as if the record was deleted
 ```
 Pending: (Failures listed here are expected and do not affect your suite's status)
