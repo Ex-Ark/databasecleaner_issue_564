@@ -1,24 +1,24 @@
-# README
+# Example repo to demonstrate database_cleaner issue 564
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+[Original issue comment](https://github.com/DatabaseCleaner/database_cleaner/issues/564#issuecomment-613334446)
 
-Things you may want to cover:
+I tried with sqlite to ease up the project setup, and I recreated the bug as well.
+So it is not tied to mysql specifically
 
-* Ruby version
+Setup:
+* `bundle install`
+* `bundle exec rails db:create db:migrate`
+* `bundle exec rake db:test:prepare`
+* `bundle exec rspec`
 
-* System dependencies
+I put the failing test in "pending" state, so the command `rspec` is not failing.
+We can see that the expected value is `!=0`, yet we got `0` in the test, as if the record was deleted
 
-* Configuration
+We can uncomment this code to make the test pass (so `rspec` will fail because it expects a pending test to fail)
+```ruby
+config.before(:suite) do
+     DatabaseCleaner.strategy = :transaction
+     DatabaseCleaner.clean_with(:truncation)
+end
+```
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
